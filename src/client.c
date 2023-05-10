@@ -23,7 +23,8 @@ int main(void){
         printf("Llave no encontrada. Intente nuevamente: ");
         scanf("%s",path_key);
     }
-    
+
+    printf("\nEncriptando el archivo ...\n");
     f_encrypt(path_key,path_file);
 
     strcat(path_file,".enc");
@@ -34,12 +35,14 @@ int main(void){
     struct tcp_client_t server;
 
     char server_dir[SIZE];
-    printf("Ingrese la direccion del servidor: ");
+
+    printf("\nIngrese la direccion del servidor: ");
     scanf("%s",server_dir); //faltaria check para buffer overflow?
     tcp_client_connect(&server, server_dir, 10000); // conexion con el server
 
     char buffer[SIZE];
     tcp_recv(server.sock, buffer, SIZE); // respuesta de la conexion inicial
+    printf("\n%s\n",buffer);
 
     char *buffer_filename = basename(path_file);
     tcp_send(server.sock,buffer_filename,strlen(buffer_filename) + 1);

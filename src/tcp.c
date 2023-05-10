@@ -32,7 +32,10 @@ void tcp_server_create(struct tcp_server_t *server, int port) {
 	if (listen(server->listen_sock, wait_size) < 0) {
 		perror("No se puede escuchar conexiones entrantes.\n");
 		exit(1);
-	}else printf("Escuchando conexiones entrantes ...\n");
+	}else {
+        printf("Escuchando conexiones entrantes ...\n");
+        printf("\n");
+    }
 
 }
 
@@ -100,10 +103,10 @@ void tcp_send_files(int sock, FILE *fp, size_t size) {
         memset(buffer, 0, 1024);
         total_bytes_sent += bytes_sent;
         double percen = ((double)total_bytes_sent/(double)size);
-        print_progress(percen,size,total_bytes_sent);
+        print_progress(percen,(float)size/1024,(float)total_bytes_sent/1024);
     }
-    printf("\n");
-    printf("Archivo enviado correctamente.\n");
+
+    printf("\n\nArchivo enviado correctamente.\n\n");
 }
 
 void tcp_recv_files(int sock, FILE *fp, size_t size) {
@@ -122,10 +125,10 @@ void tcp_recv_files(int sock, FILE *fp, size_t size) {
         memset(buffer, 0, 1024);
         total_bytes_received += bytes_received;
         double percen = ((double)total_bytes_received/(double)size);
-        print_progress(percen,size,total_bytes_received);
+        print_progress(percen,(float)size/1024,(float)total_bytes_received/1024);
     }
-    printf("\n");
-    printf("Archivo recibido correctamente.\n");
+
+    printf("\n\nArchivo recibido correctamente.\n");
 }
 
 void tcp_close(int sock) {
@@ -133,9 +136,9 @@ void tcp_close(int sock) {
     printf("Conexion cerrada.\n");
 }
 
-void print_progress(double percentage, int total_bytes, int send_bytes){
+void print_progress(double percentage, float total_bytes, float send_bytes){
     int i;
-    printf("%d/%d bytes [",send_bytes,total_bytes);
+    printf("%.0f/%.0f Kb [",send_bytes,total_bytes);
     for (i = 0; i < 50; i++) {
         if (i < percentage * 50) {
             printf("#");

@@ -4,28 +4,23 @@
 #include "crypto.h"
 #include "util.h"
 
-int main(int argc, char* argv[]) {
+void f_decrypt(const char* key_file, const char* in_file) {
+    char* out_file = malloc(strlen(in_file) - 4 + 1);
+    strncpy(out_file, in_file, strlen(in_file) - 4);
+    out_file[strlen(in_file) - 4] = '\0';
+
     if (sodium_init() != 0) {
-        fprintf(stderr, "%s: could not initialize cryptography\n", argv[0]);
-        return 1;
+        perror("could not initialize cryptography\n");
+        exit(1);
     }
-
-    if (argc != 4) {
-        fprintf(stderr, "usage: %s key_file in_file out_file\n", argv[0]);
-        return 1;
-    }
-
-    const char* key_file = argv[1];
-    const char* in_file = argv[2];
-    const char* out_file = argv[3];
 
     unsigned char key[crypto_secretbox_KEYBYTES];
     open_key(key_file, key);
 
     FILE* f_in;
     if ((f_in = fopen(in_file, "rb")) == NULL) {
-        fprintf(stderr, "%s: could not open input file\n", argv[0]);
-        return 1;
+        perror("could not open input file\n");
+        exit(1);
     }
 
     size_t input_len = file_size(f_in);
@@ -43,18 +38,18 @@ int main(int argc, char* argv[]) {
 
     unsigned char* out = malloc(data_len);
     if (decrypt(key, out, &enc) != 0) {
-        fprintf(stderr, "%s: could not decrypt\n", argv[0]);
-        return 1;
+        perror("could not open decrypt file\n");
+        exit(1);
     }
 
     FILE* f_out;
     if ((f_out = fopen(out_file, "wb")) == NULL) {
-        fprintf(stderr, "%s: could not open output file\n", argv[0]);
-        return 1;
+        perror("could not open output file\n");
+        exit(1);
     }
 
     write_file(f_out, out, data_len);
     fclose(f_out);
-
-    return 0;
+    free(out_file);
+    printf("Desencriptado exitoso\n\n");
 }

@@ -6,4 +6,4 @@
 
 void f_encrypt(const char* key_file, const char* in_file);
 
-#endif /* ENCRYPT_H */
+#endif

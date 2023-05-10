@@ -40,7 +40,7 @@ void tcp_client_connect(struct tcp_client_t *client, const char *host,
 // =================
 
 // Funciones adicionales
-void print_progress(double percentage, int total_bytes, int send_bytes);
+void print_progress(double percentage, float total_bytes, float send_bytes);
 int fsize(FILE *fp);
 bool check_file(char* path);
 

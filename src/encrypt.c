@@ -5,10 +5,9 @@
 #include "encrypt.h"
 
 void f_encrypt(const char* key_file, const char* in_file) {
-    
     char* out_file = malloc(strlen(in_file) + 5);
-    strcpy(out_file, in_file); /* copy name into the new var */
-    strcat(out_file, ".enc"); /* add the extension */
+    strcpy(out_file, in_file);
+    strcat(out_file, ".enc");
 
     if (sodium_init() != 0) {
         perror("could not initialize cryptography\n");
@@ -43,5 +42,5 @@ void f_encrypt(const char* key_file, const char* in_file) {
     write_file(f_out, enc.msg, enc.len);
     fclose(f_out);
     free(out_file);
-    
+    printf("Encriptado exitoso\n");
 }
