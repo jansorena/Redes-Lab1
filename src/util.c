@@ -1,6 +1,7 @@
 #include "util.h"
 #include <string.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 size_t file_size(FILE *fp) {
     fseek(fp, 0L, SEEK_END);
@@ -33,4 +34,50 @@ char* remove_enc(const char* in_file){
     strncpy(out_file, in_file, strlen(in_file) - 4);
     out_file[strlen(in_file) - 4] = '\0';
     return out_file;
+}
+
+void print_progress(double percentage, float total_bytes, float send_bytes){
+    int i;
+    printf("%.0f/%.0f Kb [",send_bytes,total_bytes);
+    for (i = 0; i < 50; i++) {
+        if (i < percentage * 50) {
+            printf("#");
+        } else {
+            printf(" ");
+        }
+    }
+    printf("] %.2f%%\r", percentage * 100);
+    fflush(stdout);
+}
+
+int fsize(FILE *fp){
+    int prev=ftell(fp);
+    fseek(fp, 0L, SEEK_END);
+    int sz=ftell(fp);
+    fseek(fp,prev,SEEK_SET);
+    return sz;
+}
+
+bool check_file(char* path){
+    FILE *fp = fopen(path, "r");
+    if (fp != NULL){
+        fclose(fp);
+        return true;
+    }else return false;
+}
+
+void red() {
+    printf("\033[1;31m");
+}
+
+void yellow(){
+    printf("\033[1;33m");
+}
+
+void green(){
+    printf("\033[0;32m");
+}
+
+void reset() {
+    printf("\033[0m");
 }

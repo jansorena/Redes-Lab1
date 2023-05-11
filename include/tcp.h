@@ -38,21 +38,13 @@ void tcp_client_connect(struct tcp_client_t *client, const char *host,
 // Funciones comunes
 // =================
 
-// Funciones adicionales
-void print_progress(double percentage, float total_bytes, float send_bytes);
-int fsize(FILE *fp);
-bool check_file(char* path);
-
 // Envía y recibe datos
 void tcp_send(int sock, const void *data, size_t size);
 void tcp_recv(int sock, void *data, size_t size);
-
 void tcp_send_files(int sock, FILE *fp, size_t size);
 void tcp_recv_files(int sock, FILE *data, size_t size);
 
 // Cierra la conexión
 void tcp_close(int sock);
-
-
 
 #endif  // TCP_H

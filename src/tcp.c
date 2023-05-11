@@ -1,4 +1,5 @@
 #include "tcp.h"
+#include "util.h"
 #include <arpa/inet.h>
 #include <netinet/in.h>
 #include <sys/socket.h>
@@ -134,34 +135,4 @@ void tcp_recv_files(int sock, FILE *fp, size_t size) {
 void tcp_close(int sock) {
     close(sock);
     printf("Conexion cerrada.\n");
-}
-
-void print_progress(double percentage, float total_bytes, float send_bytes){
-    int i;
-    printf("%.0f/%.0f Kb [",send_bytes,total_bytes);
-    for (i = 0; i < 50; i++) {
-        if (i < percentage * 50) {
-            printf("#");
-        } else {
-            printf(" ");
-        }
-    }
-    printf("] %.2f%%\r", percentage * 100);
-    fflush(stdout);
-}
-
-int fsize(FILE *fp){
-    int prev=ftell(fp);
-    fseek(fp, 0L, SEEK_END);
-    int sz=ftell(fp);
-    fseek(fp,prev,SEEK_SET);
-    return sz;
-}
-
-bool check_file(char* path){
-    FILE *fp = fopen(path, "r");
-    if (fp != NULL){
-        fclose(fp);
-        return true;
-    }else return false;
 }
