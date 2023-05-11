@@ -1,5 +1,5 @@
 #include "util.h"
-
+#include <string.h>
 #include <stdlib.h>
 
 size_t file_size(FILE *fp) {
@@ -26,4 +26,11 @@ void write_file(FILE *fp, void *buf, size_t size) {
         fprintf(stderr, "fwrite failed\n");
         exit(1);
     }
+}
+
+char* remove_enc(const char* in_file){
+    char* out_file = malloc(strlen(in_file) - 4 + 1);
+    strncpy(out_file, in_file, strlen(in_file) - 4);
+    out_file[strlen(in_file) - 4] = '\0';
+    return out_file;
 }

@@ -5,9 +5,7 @@
 #include "util.h"
 
 void f_decrypt(const char* key_file, const char* in_file) {
-    char* out_file = malloc(strlen(in_file) - 4 + 1);
-    strncpy(out_file, in_file, strlen(in_file) - 4);
-    out_file[strlen(in_file) - 4] = '\0';
+    char* out_file = remove_enc(in_file);
 
     if (sodium_init() != 0) {
         perror("could not initialize cryptography\n");
@@ -50,6 +48,7 @@ void f_decrypt(const char* key_file, const char* in_file) {
 
     write_file(f_out, out, data_len);
     fclose(f_out);
+
     free(out_file);
     printf("Desencriptado exitoso\n\n");
 }

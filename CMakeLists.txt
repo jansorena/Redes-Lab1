@@ -13,8 +13,8 @@ FetchContent_Declare(Sodium
 set(SODIUM_DISABLE_TESTS ON)
 FetchContent_MakeAvailable(Sodium)
 
-add_executable(server src/server.c src/tcp.c src/decrypt.c src/crypto.c src/util.c)
-add_executable(client src/client.c src/tcp.c src/encrypt.c src/crypto.c src/util.c)
+add_executable(server src/server.c src/tcp.c src/decrypt.c src/crypto.c src/util.c src/md5.c)
+add_executable(client src/client.c src/tcp.c src/encrypt.c src/crypto.c src/util.c src/md5.c)
 
 include_directories(include)
 
