@@ -7,7 +7,7 @@
 void f_decrypt(const char* key_file, const char* in_file) {
     char* out_file = remove_enc(in_file);
 
-    if (sodium_init() != 0) {
+    if(sodium_init() != 0){
         perror("could not initialize cryptography\n");
         exit(1);
     }
@@ -16,7 +16,7 @@ void f_decrypt(const char* key_file, const char* in_file) {
     open_key(key_file, key);
 
     FILE* f_in;
-    if ((f_in = fopen(in_file, "rb")) == NULL) {
+    if((f_in = fopen(in_file, "rb")) == NULL) {
         perror("could not open input file\n");
         exit(1);
     }
@@ -35,13 +35,13 @@ void f_decrypt(const char* key_file, const char* in_file) {
     read_file(f_in, enc.msg, msg_len);
 
     unsigned char* out = malloc(data_len);
-    if (decrypt(key, out, &enc) != 0) {
+    if(decrypt(key, out, &enc) != 0) {
         perror("could not open decrypt file\n");
         exit(1);
     }
 
     FILE* f_out;
-    if ((f_out = fopen(out_file, "wb")) == NULL) {
+    if((f_out = fopen(out_file, "wb")) == NULL) {
         perror("could not open output file\n");
         exit(1);
     }

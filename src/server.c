@@ -25,17 +25,17 @@ int main(void){
         // Socket para esperar las conexiones
         int sock = tcp_server_accept(&server, &client_addr, &client_addr_len);
 
-        printf("Cliente conectado con direccion IP: %s\n\n",inet_ntoa(client_addr.sin_addr));
+        printf("Cliente conectado con direccion IP: %s\n\n", inet_ntoa(client_addr.sin_addr));
 
         // Enviar respuesta de conexion
-        tcp_send(sock,"Conectado correctamente con el servidor\n",SIZE);
+        tcp_send(sock,"Conectado correctamente con el servidor\n", SIZE);
 
         // Recibir nombre archivo del cliente
         char buffer_filename[SIZE];
         tcp_recv(sock, &buffer_filename, SIZE);
 
         // Recibir tamaño archivo del cliente
-        int buffer_filesize;
+        unsigned long buffer_filesize;
         tcp_recv(sock, &buffer_filesize, SIZE);
         buffer_filesize = ntohl(buffer_filesize);
 
@@ -44,12 +44,15 @@ int main(void){
         tcp_recv(sock, &md5, MD5_LEN+1);
 
         // Imprimir informacion del archivo a recibir
-        printf("Archivo: %s    [%.2f Kb]\n",buffer_filename,(float)buffer_filesize/1024);
+        printf("Archivo: %s    [%.2f Kb]\n", buffer_filename, (float)buffer_filesize/1024);
         printf("MD5 sum: %s\n\n",md5);
         
+        char buffer_filename_2[SIZE] = "../";
+        strcat(buffer_filename_2,buffer_filename);
+
         // Crear archivo a recibir en el puntero fp
         FILE *fp;
-        if ((fp = fopen(buffer_filename, "wb")) == NULL) {
+        if((fp = fopen(buffer_filename_2, "wb")) == NULL){
             red();
             perror("No se pudo crear el archivo");
             reset();
@@ -63,20 +66,20 @@ int main(void){
         // Desencriptacion del archivo
         char path_key[SIZE]; 
         printf("\nIngrese la direccion de la llave: ");
-        scanf("%s",path_key);
+        scanf("%s", path_key);
         while(!check_file(path_key)){
             red();
             printf("Llave no encontrada. Intente nuevamente: ");
             reset();
-            scanf("%s",path_key);
+            scanf("%s", path_key);
         }
         printf("\nDesencriptando el archivo ...\n");
-        f_decrypt(path_key,buffer_filename);
+        f_decrypt(path_key, buffer_filename_2);
         
         // Comparacion de ambos hash (md5sum)
         printf("Comparando MD5 sum ...\n");
         char md5_cal[MD5_LEN+1];
-        char *file_decrypt = remove_enc(buffer_filename);
+        char *file_decrypt = remove_enc(buffer_filename_2);
         if(!CalcFileMD5(file_decrypt, md5_cal)){
             red();
             printf("No se pudo calcular MD5 sum del archivo");
@@ -93,10 +96,16 @@ int main(void){
             printf("CUIDADO! MD5 sum es distinto\n\n");
             reset();
         }
-    
+        // Borrar archivo encriptado
+
+        remove(buffer_filename_2);
+
+
         // Cierre del socket y continua esperando conexiones
         tcp_close(sock);
         free(file_decrypt);
+
+
         yellow();
         printf("\nEscuchando conexiones entrantes ...\n");
         reset();

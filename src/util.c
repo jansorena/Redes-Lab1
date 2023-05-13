@@ -15,7 +15,9 @@ void read_file(FILE *fp, void *buf, size_t size) {
     size_t read_bytes = fread(buf, 1, size, fp);
 
     if (read_bytes != size) {
+        red();
         fprintf(stderr, "fread failed\n");
+        reset();
         exit(1);
     }
 }
@@ -24,7 +26,9 @@ void write_file(FILE *fp, void *buf, size_t size) {
     size_t written_bytes = fwrite(buf, 1, size, fp);
 
     if (written_bytes != size) {
+        red();
         fprintf(stderr, "fwrite failed\n");
+        reset();
         exit(1);
     }
 }
@@ -41,7 +45,9 @@ void print_progress(double percentage, float total_bytes, float send_bytes){
     printf("%.0f/%.0f Kb [",send_bytes,total_bytes);
     for (i = 0; i < 50; i++) {
         if (i < percentage * 50) {
+            green();
             printf("#");
+            reset();
         } else {
             printf(" ");
         }
@@ -50,10 +56,10 @@ void print_progress(double percentage, float total_bytes, float send_bytes){
     fflush(stdout);
 }
 
-int fsize(FILE *fp){
-    int prev=ftell(fp);
+unsigned long fsize(FILE *fp){
+    unsigned long prev=ftell(fp);
     fseek(fp, 0L, SEEK_END);
-    int sz=ftell(fp);
+    unsigned long sz=ftell(fp);
     fseek(fp,prev,SEEK_SET);
     return sz;
 }

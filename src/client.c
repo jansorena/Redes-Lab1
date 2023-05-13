@@ -17,17 +17,17 @@ int main(void){
 
     // Archivo a enviar
     printf("Ingrese la direccion del archivo: ");
-    scanf("%s",path_file);
+    scanf("%s", path_file);
     while(!check_file(path_file)){
         red();
         printf("Archivo no encontrado. Intente nuevamente: ");
         reset();
-        scanf("%s",path_file);
+        scanf("%s", path_file);
     }
     
     // Calculo del hash (md5sum)
     printf("\nCalculando MD5 sum ...\n");
-    if (!CalcFileMD5(path_file, md5)){
+    if(!CalcFileMD5(path_file, md5)){
         red();
         printf("No se pudo calcular MD5 sum del archivo");
         reset();
@@ -40,20 +40,20 @@ int main(void){
 
     // Llave para encriptar el archivo
     printf("Ingrese la direccion de la llave: ");
-    scanf("%s",path_key);
+    scanf("%s", path_key);
     while(!check_file(path_key)){
         red();
         printf("Llave no encontrada. Intente nuevamente: ");
-        scanf("%s",path_key);
+        scanf("%s", path_key);
         reset();
     }
 
     // Encriptacion
     printf("\nEncriptando el archivo ...\n");
-    f_encrypt(path_key,path_file);
+    f_encrypt(path_key, path_file);
 
     // Verificar archivo encriptado y guardarlo en el puntero fp
-    strcat(path_file,".enc");
+    strcat(path_file, ".enc");
     check_file(path_file);
     FILE *fp = fopen(path_file, "r");
 
@@ -63,7 +63,7 @@ int main(void){
     // Direccion del server
     char server_dir[SIZE];
     printf("\nIngrese la direccion del servidor: ");
-    scanf("%s",server_dir);
+    scanf("%s", server_dir);
 
     // Conexion con el server
     tcp_client_connect(&server, server_dir, 10000);
@@ -72,23 +72,26 @@ int main(void){
     char buffer[SIZE];
     tcp_recv(server.sock, buffer, SIZE);
     green();
-    printf("\n%s\n",buffer);
+    printf("\n%s\n", buffer);
     reset();
 
     // Envio del nombre del archivo
     char *buffer_filename = basename(path_file);
-    tcp_send(server.sock,buffer_filename,strlen(buffer_filename) + 1);
+    tcp_send(server.sock, buffer_filename, strlen(buffer_filename) + 1);
 
     // Envio del tamaño del archivo
-    int buffer_filesize = htonl(fsize(fp));
-    tcp_send(server.sock,&buffer_filesize,sizeof(buffer_filesize));
+    unsigned long buffer_filesize = htonl(fsize(fp));
+    tcp_send(server.sock, &buffer_filesize, sizeof(buffer_filesize));
 
     // Envio del hash (md5sum)
-    tcp_send(server.sock,md5,MD5_LEN + 1);
+    tcp_send(server.sock, md5, MD5_LEN + 1);
 
     // Envio del archivo encriptado y cierre de la lectura
-    tcp_send_files(server.sock,fp,fsize(fp));
+    tcp_send_files(server.sock, fp, fsize(fp));
     fclose(fp);
+    
+    // Eliminar el archivo encriptado
+    remove(path_file);
     
     // Cierre del socket
     tcp_close(server.sock);

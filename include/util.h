@@ -11,7 +11,7 @@ void write_file(FILE *fp, void *buf, size_t size);
 // Funciones adicionales
 char* remove_enc(const char* in_file);
 void print_progress(double percentage, float total_bytes, float send_bytes);
-int fsize(FILE *fp);
+unsigned long fsize(FILE *fp);
 bool check_file(char* path);
 
 // Colores

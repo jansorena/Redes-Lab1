@@ -10,7 +10,9 @@ void f_encrypt(const char* key_file, const char* in_file) {
     strcat(out_file, ".enc");
 
     if (sodium_init() != 0) {
+        red();
         perror("could not initialize cryptography\n");
+        reset();
         exit(1);
     }
 
@@ -19,7 +21,9 @@ void f_encrypt(const char* key_file, const char* in_file) {
 
     FILE* f_in;
     if ((f_in = fopen(in_file, "rb")) == NULL) {
+        red();
         perror("could not open input file\n");
+        reset();
         exit(1);
     }
 
@@ -34,7 +38,9 @@ void f_encrypt(const char* key_file, const char* in_file) {
 
     FILE* f_out;
     if ((f_out = fopen(out_file, "wb")) == NULL) {
+        red();
         perror("could not open output file\n");
+        reset();
         exit(1);
     }
 
@@ -42,5 +48,7 @@ void f_encrypt(const char* key_file, const char* in_file) {
     write_file(f_out, enc.msg, enc.len);
     fclose(f_out);
     free(out_file);
+    green();
     printf("Encriptado exitoso\n");
+    reset();
 }
