@@ -79,8 +79,6 @@ Luego, el programa pedirá la ruta del archivo a enviar, la ruta de la llave y l
 
 ## Demostración
 
-[Redes Laboratorio Evaluado 1 - YouTube](https://youtu.be/C4i9JWzq3xs)
+<img title="" src="https://img.youtube.com/vi/C4i9JWzq3xs/hqdefault.jpg" alt="Redes Laboratorio Evaluado 1" width="354">
 
-[![Redes Laboratorio Evaluado 1]
-(https://i.ytimg.com/vi/C4i9JWzq3xs/maxresdefault.jpg)] // Thumbnail
-(https://www.youtube.com/watch?v=C4i9JWzq3xs "Redes Laboratorio Evaluado1")
+[Redes Laboratorio Evaluado 1 - YouTube](https://youtu.be/C4i9JWzq3xs)
