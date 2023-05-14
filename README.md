@@ -10,6 +10,7 @@ El proyecto esta divido en los siguientes archivos:
 - `client.c`: Implementa el cliente que se conecta al servidor y envía un archivo.
 - `tcp.c`: Implementa las funciones de creación del socket, bindear al puerto respectivo, escucha del servidor, conexión entre cliente y servidor, ademas del envío y recepción de datos a través de sockets TCP.
 - `md5.c`: Implementa la función de hash MD5 para calcular el hash de un archivo.
+- `keygen.c`: Genera una llave secreta para el cifrado y descifrado.
 - `encrypt.c`: Implementa la función de cifrado de un archivo con un algoritmo simétrico.
 - `decrypt.c`: Implementa la función de descifrado de un archivo cifrado con un algoritmo simétrico.
 - `crypto.c`: Implementa las funciones de cifrado y descifrado en secuencia de un archivo a partir de una llave.
@@ -17,7 +18,7 @@ El proyecto esta divido en los siguientes archivos:
 
 ## Instalación y compilación
 
-Para compilar este proyecto, se requiere tener instalado CMake y GCC. Los pasos para compilar son los siguientes:
+Para compilar este proyecto, se requiere tener instalado `CMake`, `GCC` y la biblioteca `libsodium`. Los pasos para compilar son los siguientes:
 
 1. Clonar el repositorio:
    
@@ -48,7 +49,7 @@ Para compilar este proyecto, se requiere tener instalado CMake y GCC. Los pasos 
 
 ### Llave
 
-Previo a la ejecución del programa, se requiere una llave, para poder realizar un cifrado simétrico del archivo a enviar. Esta se puede generar ejecutando:
+Previo a la ejecución del programa, se requiere una llave para poder realizar un cifrado simétrico del archivo a enviar. Esta se puede generar ejecutando:
 
 ```bash
 ./keygen llave.key
@@ -64,7 +65,7 @@ Para iniciar el servidor, ejecutar el archivo `server` compilado en el directori
 ./server
 ```
 
-El servidor escuchará en el puerto 10000 y esperará conexiones de clientes.
+El servidor escuchará en el puerto 10000 y esperará conexiones de clientes. Una vez recibido el archivo, el programa solicitara la ruta de la llave.
 
 ### Cliente
 
