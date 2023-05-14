@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(labev1_skel C)
+project(Redes-Lab1)
 
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -15,9 +15,11 @@ FetchContent_MakeAvailable(Sodium)
 
 add_executable(server src/server.c src/tcp.c src/decrypt.c src/crypto.c src/util.c src/md5.c)
 add_executable(client src/client.c src/tcp.c src/encrypt.c src/crypto.c src/util.c src/md5.c)
+add_executable(keygen src/keygen.c src/crypto.c src/util.c)
 
 include_directories(include)
 
+target_link_libraries(keygen PRIVATE sodium)
 target_link_libraries(server PRIVATE sodium)
 target_link_libraries(client PRIVATE sodium)
 

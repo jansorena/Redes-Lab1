@@ -1,38 +1,38 @@
-#include "tcp.h"
-#include "md5.h"
-#include "util.h"
 #include "encrypt.h"
+#include "md5.h"
+#include "tcp.h"
+#include "util.h"
+#include <libgen.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
-#include <libgen.h>
 
-#define SIZE 1024
+#define SIZE    1024
 #define MD5_LEN 32
 
-int main(void){
+int main(void) {
     char path_file[SIZE];
     char path_key[SIZE];
-    char md5[MD5_LEN + 1]; 
+    char md5[MD5_LEN + 1];
 
     // Archivo a enviar
     printf("Ingrese la direccion del archivo: ");
     scanf("%s", path_file);
-    while(!check_file(path_file)){
+    while (!check_file(path_file)) {
         red();
         printf("Archivo no encontrado. Intente nuevamente: ");
         reset();
         scanf("%s", path_file);
     }
-    
+
     // Calculo del hash (md5sum)
     printf("\nCalculando MD5 sum ...\n");
-    if(!CalcFileMD5(path_file, md5)){
+    if (!CalcFileMD5(path_file, md5)) {
         red();
         printf("No se pudo calcular MD5 sum del archivo");
         reset();
         exit(1);
-    }else{
+    } else {
         green();
         printf("Calculo MD5 sum exitoso!\n\n");
         reset();
@@ -41,7 +41,7 @@ int main(void){
     // Llave para encriptar el archivo
     printf("Ingrese la direccion de la llave: ");
     scanf("%s", path_key);
-    while(!check_file(path_key)){
+    while (!check_file(path_key)) {
         red();
         printf("Llave no encontrada. Intente nuevamente: ");
         scanf("%s", path_key);
@@ -89,10 +89,10 @@ int main(void){
     // Envio del archivo encriptado y cierre de la lectura
     tcp_send_files(server.sock, fp, fsize(fp));
     fclose(fp);
-    
+
     // Eliminar el archivo encriptado
     remove(path_file);
-    
+
     // Cierre del socket
     tcp_close(server.sock);
 

@@ -1,10 +1,10 @@
 #ifndef TCP_H
 #define TCP_H
 #include <netinet/in.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdbool.h>
 
 // Funciones de servidor
 // =====================
@@ -47,4 +47,4 @@ void tcp_recv_files(int sock, FILE *data, size_t size);
 // Cierra la conexión
 void tcp_close(int sock);
 
-#endif  // TCP_H
+#endif   // TCP_H

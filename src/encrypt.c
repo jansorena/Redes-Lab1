@@ -1,11 +1,11 @@
-#include <stdio.h>
-#include <string.h>
+#include "encrypt.h"
 #include "crypto.h"
 #include "util.h"
-#include "encrypt.h"
+#include <stdio.h>
+#include <string.h>
 
-void f_encrypt(const char* key_file, const char* in_file) {
-    char* out_file = malloc(strlen(in_file) + 5);
+void f_encrypt(const char *key_file, const char *in_file) {
+    char *out_file = malloc(strlen(in_file) + 5);
     strcpy(out_file, in_file);
     strcat(out_file, ".enc");
 
@@ -19,7 +19,7 @@ void f_encrypt(const char* key_file, const char* in_file) {
     unsigned char key[crypto_secretbox_KEYBYTES];
     open_key(key_file, key);
 
-    FILE* f_in;
+    FILE *f_in;
     if ((f_in = fopen(in_file, "rb")) == NULL) {
         red();
         perror("could not open input file\n");
@@ -28,7 +28,7 @@ void f_encrypt(const char* key_file, const char* in_file) {
     }
 
     size_t input_len = file_size(f_in);
-    unsigned char* input_data = malloc(input_len);
+    unsigned char *input_data = malloc(input_len);
 
     read_file(f_in, input_data, input_len);
     fclose(f_in);
@@ -36,7 +36,7 @@ void f_encrypt(const char* key_file, const char* in_file) {
     struct encrypted_t enc;
     encrypt(key, &enc, input_data, input_len);
 
-    FILE* f_out;
+    FILE *f_out;
     if ((f_out = fopen(out_file, "wb")) == NULL) {
         red();
         perror("could not open output file\n");

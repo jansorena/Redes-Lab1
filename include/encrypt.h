@@ -4,6 +4,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void f_encrypt(const char* key_file, const char* in_file);
+void f_encrypt(const char *key_file, const char *in_file);
 
 #endif
