@@ -77,10 +77,10 @@ int main(void) {
 
     // Envio del nombre del archivo
     char *buffer_filename = basename(path_file);
-    tcp_send(server.sock, buffer_filename, strlen(buffer_filename) + 1);
+    tcp_send(server.sock, buffer_filename, SIZE);
 
     // Envio del tamaño del archivo
-    unsigned long buffer_filesize = htonl(fsize(fp));
+    size_t buffer_filesize = htonl(fsize(fp));
     tcp_send(server.sock, &buffer_filesize, sizeof(buffer_filesize));
 
     // Envio del hash (md5sum)

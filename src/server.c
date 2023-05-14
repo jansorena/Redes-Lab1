@@ -33,15 +33,17 @@ int main(void) {
 
         // Recibir nombre archivo del cliente
         char buffer_filename[SIZE];
+        memset(buffer_filename, 0, sizeof(buffer_filename));
         tcp_recv(sock, &buffer_filename, SIZE);
 
         // Recibir tamaño archivo del cliente
-        unsigned long buffer_filesize;
-        tcp_recv(sock, &buffer_filesize, SIZE);
+        size_t buffer_filesize = 0;
+        tcp_recv(sock, &buffer_filesize, sizeof(buffer_filesize));
         buffer_filesize = ntohl(buffer_filesize);
 
         // Recibir hash (md5sum) del cliente
         char md5[MD5_LEN + 1];
+        memset(md5, 0, sizeof(md5));
         tcp_recv(sock, &md5, MD5_LEN + 1);
 
         // Imprimir informacion del archivo a recibir

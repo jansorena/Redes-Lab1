@@ -56,10 +56,10 @@ void print_progress(double percentage, float total_bytes, float send_bytes) {
     fflush(stdout);
 }
 
-unsigned long fsize(FILE *fp) {
-    unsigned long prev = ftell(fp);
+size_t fsize(FILE *fp) {
+    size_t prev = ftell(fp);
     fseek(fp, 0L, SEEK_END);
-    unsigned long sz = ftell(fp);
+    size_t sz = ftell(fp);
     fseek(fp, prev, SEEK_SET);
     return sz;
 }
