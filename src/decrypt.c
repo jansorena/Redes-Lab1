@@ -7,8 +7,10 @@
 void f_decrypt(const char *key_file, const char *in_file) {
     char *out_file = remove_enc(in_file);
 
-    if (sodium_init() != 0) {
+    if (sodium_init() < 0) {
+        red();
         perror("could not initialize cryptography\n");
+        reset();
         exit(1);
     }
 

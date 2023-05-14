@@ -9,7 +9,7 @@ void f_encrypt(const char *key_file, const char *in_file) {
     strcpy(out_file, in_file);
     strcat(out_file, ".enc");
 
-    if (sodium_init() != 0) {
+    if (sodium_init() < 0) {
         red();
         perror("could not initialize cryptography\n");
         reset();
